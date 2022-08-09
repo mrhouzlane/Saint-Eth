@@ -1,5 +1,9 @@
 // SPDX-License-Identifier: UNLICENSED
-pragma solidity ^0.8.4;
+pragma solidity ^0.8.4; //fixed solidity version 
+
+//block Timestamp should not be used 
+// be careful about division 
+
 
 // Import this file to use console.log
 import "hardhat/console.sol";
@@ -13,6 +17,7 @@ contract SaintEth is Ownable, VRFConsumerBaseV2  {
     address[] public participants  ; //for the giveAway everyone should know the participants
     mapping(address => bool) isWhitelisted ; 
     mapping(address => uint256) addressToTicket; //each address has a ticket like id 
+    mapping(address => bool) isFloatMember; 
 
     enum LotterySteps {
         notStarted,
@@ -29,7 +34,7 @@ contract SaintEth is Ownable, VRFConsumerBaseV2  {
     VRFCoordinatorV2Interface COORDINATOR;
 
     // Your subscription ID.
-    uint64 s_subscriptionId;
+    uint64 public s_subscriptionId;
 
     
     // see https://docs.chain.link/docs/vrf-contracts/#configurations
@@ -49,7 +54,7 @@ contract SaintEth is Ownable, VRFConsumerBaseV2  {
 
     uint256[] public s_randomWords;
     uint256 public s_requestId;
-    address s_owner;
+    address public s_owner;
 
     constructor(uint64 subscriptionId) VRFConsumerBaseV2(vrfCoordinator) {
         COORDINATOR = VRFCoordinatorV2Interface(vrfCoordinator);
@@ -99,6 +104,7 @@ contract SaintEth is Ownable, VRFConsumerBaseV2  {
         return addressToTicket[_address];
     }
 
+
     //@notice Start the Lottery
     function startLottery() public onlyOwner {
         require(status == LotterySteps.Initliazed);
@@ -109,11 +115,16 @@ contract SaintEth is Ownable, VRFConsumerBaseV2  {
 
     }
 
-    function selectWinner() internal view returns(address){}
+
+    function selectWinner() internal view returns(address){
 
 
 
+    }
 
+
+
+    // @notice mint token without paying for authorization gas fees 
     function rewardWinner() external{}
 
 
@@ -121,8 +132,6 @@ contract SaintEth is Ownable, VRFConsumerBaseV2  {
     // require(msg.sender == s_owner);
     // _;
     // }
-
-
 
 
 
