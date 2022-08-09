@@ -5,7 +5,7 @@ async function main() {
   //const SaintEthAmount = hre.ethers.utils.parseEther("0.1");
 
   const SaintEth = await hre.ethers.getContractFactory("SaintEth");
-  const sainteth = await SaintEth.deploy();
+  const sainteth = await SaintEth.deploy(10185);
 
   await sainteth.deployed();
 

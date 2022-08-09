@@ -9,6 +9,9 @@ require("dotenv").config();
 const accounts =
   process.env.PRIVATE_KEY !== undefined ? [process.env.PRIVATE_KEY] : [];
 
+const url =
+  process.env.RPC_URL !== undefined ? process.env.RPC_URL : "";
+
 
 /** @type import('hardhat/config').HardhatUserConfig */
 module.exports = {
@@ -23,7 +26,7 @@ module.exports = {
   networks: {
     rinkeby: {
       chainId : 4,
-      url: "https://rinkeby.infura.io/v3/2910e39eaa7e402a814dc2ef2022969c",
+      url,
       accounts
     }
   }
