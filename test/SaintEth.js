@@ -1,9 +1,7 @@
-const  { ethers } = require("chai");
+const { ethers } = require("chai");
 const { expect } = require("chai");
-const { BigNumber } = require('ethers');
 const hre = require("hardhat");
 const { experimentalAddHardhatNetworkMessageTraceHook } = require("hardhat/config");
-const { chai } = require('chai');
 
 
 describe("SaintEth", function() {
@@ -21,7 +19,6 @@ describe("SaintEth", function() {
       it('Should set the constructor correctly', async function () {
         expect(await saintEthContract.s_owner()).to.equal(owner.address)
       })
-    });
 
       it('Should set the subscriptionId ', async function () {
         overrides = await saintEthContract.s_subscriptionId();
@@ -31,13 +28,8 @@ describe("SaintEth", function() {
         expect(hre.ethers.utils.formatEther(overrides)).to.be.equal(hre.ethers.utils.formatEther(expected));
       })
 
-    // // describe('requestRandomWords', function() {
-    // //   it('revert if subscription is not funded', async function () {
-    // //     await expect(saintEthContract.connect(owner).requestRandomWords()).to.be.revertedWith();
-    // //   })
-      
+    });
 
-    // })
 
     describe('enterLottery', function() {
       it('Update status', async function () {
@@ -58,15 +50,18 @@ describe("SaintEth", function() {
 
       });
 
-    }); 
+      it("revert if msg.value <0.1", async function() {
+        const overrides = {value: hre.ethers.utils.parseEther("0.099")}
+        await expect(saintEthContract.connect(addr1).enterLottery(overrides)).to.be.revertedWith("Not enough");
+      });
+
+    
+
+    });
 
 
 
      
-
-
-
-
 })
 
 

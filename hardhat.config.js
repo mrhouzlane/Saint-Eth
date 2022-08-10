@@ -1,7 +1,8 @@
 require("hardhat-gas-reporter");
 require("dotenv").config();
 require("@nomiclabs/hardhat-waffle");
-
+require("@nomicfoundation/hardhat-toolbox");
+require("@nomicfoundation/hardhat-chai-matchers");
 
 const accounts =
   process.env.PRIVATE_KEY !== undefined ? [process.env.PRIVATE_KEY] : [];
