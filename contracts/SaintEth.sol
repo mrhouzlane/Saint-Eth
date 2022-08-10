@@ -17,13 +17,13 @@ import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
 contract SaintEth is Ownable, VRFConsumerBaseV2, ERC721  {
 
     address[] public participants  ; //for the giveAway everyone should know the participants
-    mapping(address => bool) isWhitelisted ; 
+    mapping(address => bool) public isWhitelisted ; 
     mapping(address => uint256) addressToTicket; 
     mapping(uint256 => address) winnerToAddress ;
 
     enum LotterySteps {
         notStarted,
-        Initliazed, 
+        Initialized, 
         Started,
         Finished
     }
@@ -34,7 +34,6 @@ contract SaintEth is Ownable, VRFConsumerBaseV2, ERC721  {
     //------------------------------------------------------CHAINLINK PART--------------------------------------------------------------------------///
 
     VRFCoordinatorV2Interface COORDINATOR;
-    LinkTokenInterface LINKTOKEN;
 
     // Your subscription ID.
     uint64 public s_subscriptionId;
@@ -63,6 +62,8 @@ contract SaintEth is Ownable, VRFConsumerBaseV2, ERC721  {
         COORDINATOR = VRFCoordinatorV2Interface(vrfCoordinator);
         s_owner = msg.sender;
         s_subscriptionId = subscriptionId;
+        status = LotterySteps.notStarted;
+
     }
 
     // Assumes the subscription is funded sufficiently.
@@ -88,14 +89,19 @@ contract SaintEth is Ownable, VRFConsumerBaseV2, ERC721  {
 
 
     //@notice Pay to enter Lottery 
-    function enterLottery(address _participant) external payable{
+
+
+
+    function enterLottery() external payable{
         require(status ==  LotterySteps.notStarted);
         require(msg.value >= 0.1 ether, "Not enough"); //small revert text to consume less gas
-        require(isWhitelisted[_participant] = false, "Already participating");
+        
 
-        participants.push(_participant);
-        status == LotterySteps.Initliazed;
+        status = LotterySteps.Initialized;
 
+        isWhitelisted[msg.sender] = true;
+
+       
     }
 
     function returnId(address _address) private returns (uint256) {
@@ -110,7 +116,7 @@ contract SaintEth is Ownable, VRFConsumerBaseV2, ERC721  {
 
     //@notice Start the Lottery
     function startLottery() public onlyOwner {
-        require(status == LotterySteps.Initliazed);
+        //require(status == LotterySteps.Initliazed);
         require(participants.length >= 3); // for testing purposes we set 3 to test with 3 accounts; 
         status = LotterySteps.Started;
     }

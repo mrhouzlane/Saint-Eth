@@ -42,18 +42,34 @@ describe("SaintEth", function() {
     describe('enterLottery', function() {
       it('Update status', async function () {
         const overrides = {value: hre.ethers.utils.parseEther("0.1")}
-        await saintEthContract.connect(addr1).enterLottery(addr1.address, overrides)
-        await saintEthContract.connect(addr2).enterLottery(addr2.address, overrides)
-        await saintEthContract.connect(addr3).enterLottery(addr3.address, overrides)
+        await saintEthContract.connect(addr1).enterLottery(overrides)
+        //await saintEthContract.connect(addr4).enterLottery(addr2.address, overrides)
+        //await saintEthContract.connect(addr3).enterLottery(addr3.address, overrides)
+
+        expect(await saintEthContract.status()).to.equal(1);
+
+      });
+
+      it('Whitelist participant', async function () {
+        const overrides = {value: hre.ethers.utils.parseEther("0.1")}
+        await saintEthContract.connect(addr1).enterLottery(overrides)
+
+        expect(await saintEthContract.isWhitelisted(addr1.address)).to.be.equal(true);
+
+      });
+
+    }); 
 
 
-      })
-    });
+
+     
 
 
 
 
 })
+
+
 
 
 
