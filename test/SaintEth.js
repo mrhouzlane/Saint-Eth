@@ -9,9 +9,10 @@ describe("SaintEth", function() {
 
     let SaintEth, saintEthContract, owner, addr1, addr2, addr3, addrs
     beforeEach(async function () {
-      SaintEth = await hre.ethers.getContractFactory("SaintEth");
       [owner, addr1, addr2, addr3, ...addrs] = await hre.ethers.getSigners();
-      saintEthContract = await SaintEth.deploy(10185)
+      SaintEth = await hre.ethers.getContractFactory("SaintEth");
+      saintEthContract = await SaintEth.deploy(10185);
+      
     });
   
     describe('Deployment', function() {
@@ -23,22 +24,26 @@ describe("SaintEth", function() {
 
     describe('Deployment', function() {
       it('Should set the subscriptionId ', async function () {
-        expect(await saintEthContract.s_subscriptionId()).to.be.equal(ethers.BigNumber.from(10185));
+        overrides = await saintEthContract.s_subscriptionId();
+        const expected = hre.ethers.utils.parseUnits("10185", 0);
+        //console.log(overrides);
+        //console.log(hre.ethers.utils.parseUnits("10185", 0));
+        expect(hre.ethers.utils.formatEther(overrides)).to.be.equal(hre.ethers.utils.formatEther(expected));
       })
     });
 
-    describe('requestRandomWords', function() {
-      it('revert if subscription is not funded', async function () {
-        await expect(saintEthContract.connect(owner).requestRandomWords()).to.be.reverted;
-      })
-      it('should call the fulffilRandWords', async function () {
-        // saintEthContract
-        // await requestRandomWords();
-        // console.log();
-      })
+    // describe('requestRandomWords', function() {
+    //   it('revert if subscription is not funded', async function () {
+    //     await expect(saintEthContract.connect(owner).requestRandomWords()).to.be.reverted;
+    //   })
+    //   it('should call the fulffilRandWords', async function () {
+    //     saintEthContract
+    //     await requestRandomWords();
+    //     console.log();
+    //   })
 
     
-    });
+    // });
 
 
 

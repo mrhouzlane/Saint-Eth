@@ -10,14 +10,16 @@ import "hardhat/console.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 import "@chainlink/contracts/src/v0.8/interfaces/VRFCoordinatorV2Interface.sol";
 import "@chainlink/contracts/src/v0.8/VRFConsumerBaseV2.sol";
+import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
 
 
-contract SaintEth is Ownable, VRFConsumerBaseV2  {
+
+contract SaintEth is Ownable, VRFConsumerBaseV2, ERC721  {
 
     address[] public participants  ; //for the giveAway everyone should know the participants
     mapping(address => bool) isWhitelisted ; 
-    mapping(address => uint256) addressToTicket; //each address has a ticket like id 
-    mapping(address => bool) isFloatMember; 
+    mapping(address => uint256) addressToTicket; 
+    mapping(uint256 => address) winnerToAddress ;
 
     enum LotterySteps {
         notStarted,
@@ -56,7 +58,7 @@ contract SaintEth is Ownable, VRFConsumerBaseV2  {
     uint256 public s_requestId;
     address public s_owner;
 
-    constructor(uint64 subscriptionId) VRFConsumerBaseV2(vrfCoordinator) {
+    constructor(uint64 subscriptionId) ERC721("SaintETH", "STH") VRFConsumerBaseV2(vrfCoordinator) {
         COORDINATOR = VRFCoordinatorV2Interface(vrfCoordinator);
         s_owner = msg.sender;
         s_subscriptionId = subscriptionId;
@@ -109,23 +111,30 @@ contract SaintEth is Ownable, VRFConsumerBaseV2  {
     function startLottery() public onlyOwner {
         require(status == LotterySteps.Initliazed);
         require(participants.length >= 3); // for testing purposes we set 3 to test with 3 accounts; 
-
         status = LotterySteps.Started;
-
-
     }
 
-
-    function selectWinner() internal view returns(address){
-
-
-
-    }
-
-
+    
 
     // @notice mint token without paying for authorization gas fees 
-    function rewardWinner() external{}
+    function selectWinner(address from, uint256 tokenId) public returns (address payable _winner)  {
+        require(status == LotterySteps.Started);
+        address payable winner;
+        for (uint i ; i < participants.length ; i ++ ){
+            if (addressToTicket[participants[i]] ==  s_randomWords[0]) {
+                return winner = _winner; 
+            }
+        }
+
+        safeTransferFrom(from, _winner, tokenId);
+
+        status = LotterySteps.Finished ;
+
+    }
+  
+
+
+
 
 
     
