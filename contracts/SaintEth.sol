@@ -128,11 +128,7 @@ contract SaintEth is Ownable, VRFConsumerBaseV2  {
     function rewardWinner() external{}
 
 
-    // modifier onlyOwner() {
-    // require(msg.sender == s_owner);
-    // _;
-    // }
-
+    
 
 
 

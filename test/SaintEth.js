@@ -1,10 +1,11 @@
 const { ethers } = require("chai");
 const { expect } = require("chai");
+const { BigNumber } = require('ethers');
 const hre = require("hardhat");
 const { experimentalAddHardhatNetworkMessageTraceHook } = require("hardhat/config");
 
-
 describe("SaintEth", function() {
+
 
     let SaintEth, saintEthContract, owner, addr1, addr2, addr3, addrs
     beforeEach(async function () {
@@ -22,7 +23,7 @@ describe("SaintEth", function() {
 
     describe('Deployment', function() {
       it('Should set the subscriptionId ', async function () {
-        expect(await saintEthContract.s_subscriptionId()).to.equal(10185)
+        expect(await saintEthContract.s_subscriptionId()).to.be.equal(ethers.BigNumber.from(10185));
       })
     });
 
@@ -30,7 +31,16 @@ describe("SaintEth", function() {
       it('revert if subscription is not funded', async function () {
         await expect(saintEthContract.connect(owner).requestRandomWords()).to.be.reverted;
       })
+      it('should call the fulffilRandWords', async function () {
+        // saintEthContract
+        // await requestRandomWords();
+        // console.log();
+      })
+
+    
     });
+
+
 
 
 
