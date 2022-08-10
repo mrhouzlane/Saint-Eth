@@ -31,33 +31,64 @@ describe("SaintEth", function() {
     });
 
 
-    describe('enterLottery', function() {
-      it('Update status', async function () {
-        const overrides = {value: hre.ethers.utils.parseEther("0.1")}
-        await saintEthContract.connect(addr1).enterLottery(overrides)
-        //await saintEthContract.connect(addr4).enterLottery(addr2.address, overrides)
-        //await saintEthContract.connect(addr3).enterLottery(addr3.address, overrides)
+    // describe('enterLottery', function() {
+    //   it('Update status', async function () {
+    //     const overrides = {value: hre.ethers.utils.parseEther("0.1")}
+    //     await saintEthContract.connect(addr1).enterLottery(overrides)
+    //     //await saintEthContract.connect(addr4).enterLottery(addr2.address, overrides)
+    //     //await saintEthContract.connect(addr3).enterLottery(addr3.address, overrides)
 
-        expect(await saintEthContract.status()).to.equal(1);
+    //     expect(await saintEthContract.status()).to.equal(1);
 
-      });
+    //   });
 
-      it('Whitelist participant', async function () {
-        const overrides = {value: hre.ethers.utils.parseEther("0.1")}
-        await saintEthContract.connect(addr1).enterLottery(overrides)
+    //   it('Whitelist participant', async function () {
+    //     const overrides = {value: hre.ethers.utils.parseEther("0.1")}
+    //     await saintEthContract.connect(addr1).enterLottery(overrides)
 
-        expect(await saintEthContract.isWhitelisted(addr1.address)).to.be.equal(true);
+    //     expect(await saintEthContract.isWhitelisted(addr1.address)).to.be.equal(true);
 
-      });
+    //   });
 
-      it("revert if msg.value <0.1", async function() {
-        const overrides = {value: hre.ethers.utils.parseEther("0.099")}
-        await expect(saintEthContract.connect(addr1).enterLottery(overrides)).to.be.revertedWith("Not enough");
-      });
+    //   it("revert if msg.value <0.1", async function() {
+    //     const overrides = {value: hre.ethers.utils.parseEther("0.099")}
+    //     await expect(saintEthContract.connect(addr1).enterLottery(overrides)).to.be.revertedWith("Not enough");
+    //   });
 
     
 
-    });
+    // });
+
+
+    describe('returnId', function() {
+      it('should return the Id of a whitelisted address', async function () {
+        const overrides = {value: hre.ethers.utils.parseEther("0.1")}
+        await saintEthContract.connect(addr1).enterLottery(overrides)
+        await saintEthContract.connect(addr2).enterLottery(overrides)
+
+        await saintEthContract.connect(addr1).returnId(addr1.address);
+        await saintEthContract.connect(addr2).returnId(addr2.address);
+
+        expect(await saintEthContract.addressToTicket(addr1.address)).to.be.equal(1)
+        expect(await saintEthContract.addressToTicket(addr1.address)).to.be.equal(2)
+
+      });
+    })
+
+    // describe('startLottery', function() {
+    //   it('should return the Id of a whitelisted address', async function () {
+    //     const overrides = {value: hre.ethers.utils.parseEther("0.1")}
+    //     await saintEthContract.connect(addr1).enterLottery(overrides)
+    //     await saintEthContract.connect(addr1).returnId(addr1.address);
+
+    //     await saintEthContract.connect(addr2).enterLottery(overrides)
+    //     await saintEthContract.connect(addr2).returnId(addr2.address);
+
+    //     expect(await saintEthContract.addressToTicket(addr1.address)).to.be.equal(1)
+    //     expect(await saintEthContract.addressToTicket(addr1.address)).to.be.equal(2)
+
+    //   });
+    // })
 
 
 

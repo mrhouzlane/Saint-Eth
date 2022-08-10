@@ -18,7 +18,7 @@ contract SaintEth is Ownable, VRFConsumerBaseV2, ERC721  {
 
     address[] public participants  ; //for the giveAway everyone should know the participants
     mapping(address => bool) public isWhitelisted ; 
-    mapping(address => uint256) addressToTicket; 
+    mapping(address => uint256) public addressToTicket; 
     mapping(uint256 => address) winnerToAddress ;
 
     enum LotterySteps {
@@ -88,21 +88,18 @@ contract SaintEth is Ownable, VRFConsumerBaseV2, ERC721  {
     ///------------------------------------------------------GIVEAWAY--------------------------------------------------------------------------///
 
 
-    //@notice Pay to enter Lottery 
-
-
-
+    //@notice Enters lottery by paying 0.1 ethers 
     function enterLottery() external payable{
         require(status ==  LotterySteps.notStarted);
         require(msg.value >= 0.1 ether, "Not enough"); //small revert text to consume less gas
         status = LotterySteps.Initialized;
         isWhitelisted[msg.sender] = true;
-
+        participants.push(msg.sender);
     }
 
-    function returnId(address _address) private returns (uint256) {
+    function returnId(address _address) public returns (uint256) {
         require(isWhitelisted[_address] = true, "Enter Lottery before getting Id");
-        for (uint i = 1 ; i <= participants.length ; i++ ){
+        for (uint i = 0 ; i < participants.length ; i++ ){
             addressToTicket[participants[i]] = i; 
         }
 
