@@ -1,8 +1,10 @@
-const { ethers } = require("chai");
+const  { ethers } = require("chai");
 const { expect } = require("chai");
 const { BigNumber } = require('ethers');
 const hre = require("hardhat");
 const { experimentalAddHardhatNetworkMessageTraceHook } = require("hardhat/config");
+const { chai } = require('chai');
+
 
 describe("SaintEth", function() {
 
@@ -11,7 +13,7 @@ describe("SaintEth", function() {
     beforeEach(async function () {
       [owner, addr1, addr2, addr3, ...addrs] = await hre.ethers.getSigners();
       SaintEth = await hre.ethers.getContractFactory("SaintEth");
-      saintEthContract = await SaintEth.deploy(10185);
+      saintEthContract = await SaintEth.deploy(10185); // https://vrf.chain.link/
       
     });
   
@@ -21,8 +23,6 @@ describe("SaintEth", function() {
       })
     });
 
-
-    describe('Deployment', function() {
       it('Should set the subscriptionId ', async function () {
         overrides = await saintEthContract.s_subscriptionId();
         const expected = hre.ethers.utils.parseUnits("10185", 0);
@@ -30,25 +30,34 @@ describe("SaintEth", function() {
         //console.log(hre.ethers.utils.parseUnits("10185", 0));
         expect(hre.ethers.utils.formatEther(overrides)).to.be.equal(hre.ethers.utils.formatEther(expected));
       })
+
+    // // describe('requestRandomWords', function() {
+    // //   it('revert if subscription is not funded', async function () {
+    // //     await expect(saintEthContract.connect(owner).requestRandomWords()).to.be.revertedWith();
+    // //   })
+      
+
+    // })
+
+    describe('enterLottery', function() {
+      it('Update status', async function () {
+        const overrides = {value: hre.ethers.utils.parseEther("0.1")}
+        await saintEthContract.connect(addr1).enterLottery(addr1.address, overrides)
+        await saintEthContract.connect(addr2).enterLottery(addr2.address, overrides)
+        await saintEthContract.connect(addr3).enterLottery(addr3.address, overrides)
+
+
+      })
     });
-
-    // describe('requestRandomWords', function() {
-    //   it('revert if subscription is not funded', async function () {
-    //     await expect(saintEthContract.connect(owner).requestRandomWords()).to.be.reverted;
-    //   })
-    //   it('should call the fulffilRandWords', async function () {
-    //     saintEthContract
-    //     await requestRandomWords();
-    //     console.log();
-    //   })
-
-    
-    // });
-
-
-
 
 
 
 
 })
+
+
+
+
+
+
+
