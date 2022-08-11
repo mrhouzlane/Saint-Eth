@@ -1,7 +1,7 @@
 
-# Saint-ETH
+# Saint-ETH 🗺️
 
-This is a project using Chainlink Oracle to select a random winner participating to a Lottery 🌈. 
+This is a project using Chainlink Oracle to select a random winner participating to a Lottery 🎢 . 
 
 ## Project Description 
 
