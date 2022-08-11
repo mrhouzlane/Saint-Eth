@@ -14,7 +14,7 @@ We are using Verifiable Random Function to generate one or more random numbers t
 
 ## How it Works
 
-- Stack used :
+Stack used :
 
 - **Solidity** for smart contracts | Some **Assemby** code for gas optimization 
 - **Hardhat** for the testing and running the code 
