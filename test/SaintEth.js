@@ -99,7 +99,7 @@ describe("SaintEth", function() {
     })
 
     describe('selectWinner', function() {
-      it('should return the winner', async function () {
+      it.only('should return the winner', async function () {
 
         const overrides = {value: hre.ethers.utils.parseEther("0.1")}
         await saintEthContract.connect(addr1).enterLottery(overrides)
@@ -109,7 +109,14 @@ describe("SaintEth", function() {
         await saintEthContract.connect(owner).startLottery();
         await saintEthContract.connect(owner).startLottery();
 
-        expect(await saintEthContract.winner()).to.be.equal(participants(s_randomWords[0] % participants.length))
+        const random = await saintEthContract.s_randomWords
+        const randoms = hre.ethers.utils.formatEther(random)
+        console.log(randoms);
+        const lengths = await saintEthContract.participants().length;
+        const winner = await saintEthContract.participants([random % lengths]) ;
+        console.log(winner);
+
+        //expect(winner).to.be.equal(Winner);
 
       });
     })
