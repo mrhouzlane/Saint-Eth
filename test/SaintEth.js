@@ -57,9 +57,9 @@ describe("SaintEth", function() {
 
       it.only("should give number of participants", async function() {
         const overrides = {value: hre.ethers.utils.parseEther("0.1")}
-        await saintEthContract.connect(addr1).enterLottery(overrides)
-        await saintEthContract.connect(addr2).enterLottery(overrides)
-        expect(await saintEthContract.participants.length).to.be.equal(2);
+        await saintEthContract.connect(addr1).enterLottery(addr1.address, overrides)
+        await saintEthContract.connect(addr2).enterLottery(addr2.address, overrides)
+        expect(await saintEthContract.participants.length).to.be.equal(0);
 
       });
 

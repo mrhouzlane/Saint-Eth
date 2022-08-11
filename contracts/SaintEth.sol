@@ -12,7 +12,8 @@ import "@chainlink/contracts/src/v0.8/interfaces/VRFCoordinatorV2Interface.sol";
 import "@chainlink/contracts/src/v0.8/VRFConsumerBaseV2.sol";
 import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
 
-
+//@title Lottery random-gated rewarding the winner with an ERC721 NFT 
+//@author RHOUZLANE Mehdi
 
 contract SaintEth is Ownable, VRFConsumerBaseV2, ERC721  {
 
@@ -90,11 +91,11 @@ contract SaintEth is Ownable, VRFConsumerBaseV2, ERC721  {
 
 
     //@notice Enters lottery by paying 0.1 ethers 
-    function enterLottery() external payable{
+    function enterLottery(address _address) external payable{
         require(msg.value >= 0.1 ether, "Not enough"); //small revert text to consume less gas
         status = LotterySteps.Initialized;
-        isWhitelisted[msg.sender] = true;
-        participants.push(payable(msg.sender));
+        isWhitelisted[_address] = true;
+        participants.push(payable(_address));
     }
 
    
@@ -117,7 +118,7 @@ contract SaintEth is Ownable, VRFConsumerBaseV2, ERC721  {
     function selectWinner(address from, uint256 tokenId) public returns (address payable _winner)  {
         require(status == LotterySteps.Started);
         address payable winner;
-        for (uint i ; i < participants.length ; i ++ ){
+        for (uint i = 1 ; i < participants.length ; i ++ ){
             if (addressToTicket[participants[i]] ==  s_randomWords[0]) {
                 return winner = _winner; 
             }
@@ -128,6 +129,8 @@ contract SaintEth is Ownable, VRFConsumerBaseV2, ERC721  {
         status = LotterySteps.Finished ;
 
     }
+
+    
   
 
 
