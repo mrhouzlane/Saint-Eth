@@ -18,7 +18,7 @@ Stack used :
 
 - **Solidity** for smart contracts | Some **Assemby** code for gas optimization 
 - **Hardhat** for the testing and running the code 
-- No front end for the moment ... 
+- No front end for the moment ... (no events emited ). 
 
 
 
