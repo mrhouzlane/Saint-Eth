@@ -33,6 +33,8 @@ contract SaintEth is Ownable, VRFConsumerBaseV2, ERC721  {
 
     //------------------------------------------------------CHAINLINK PART--------------------------------------------------------------------------///
 
+    
+    //---RINKEBY----
     VRFCoordinatorV2Interface COORDINATOR;
 
     // Your subscription ID.
