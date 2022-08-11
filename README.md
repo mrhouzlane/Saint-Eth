@@ -1,13 +1,31 @@
-# Sample Hardhat Project
 
-This project demonstrates a basic Hardhat use case. It comes with a sample contract, a test for that contract, and a script that deploys that contract.
+# Saint-ETH
 
-Try running some of the following tasks:
+This is a project using Chainlink Oracle to select a random winner participating to a Lottery 🌈. 
 
-```shell
-npx hardhat help
-npx hardhat test
-GAS_REPORT=true npx hardhat test
-npx hardhat node
-npx hardhat run scripts/deploy.js
-```
+## Project Description 
+
+
+
+## Features 
+
+We are using Verifiable Random Function to generate one or more random numbers than we will you use to select the winner by adding a modulo function to limitate the possible numbers to the length of the participants. 
+
+
+## How it Works
+
+- Stack used :
+
+- **Solidity** for smart contracts | Some **Assemby** code for gas optimization 
+- **Hardhat** for the testing and running the code 
+- No front end for the moment ... 
+
+
+
+
+
+
+
+
+
+
