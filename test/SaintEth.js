@@ -75,8 +75,8 @@ describe("SaintEth", function() {
         await saintEthContract.connect(addr2).enterLottery(overrides)
         await saintEthContract.connect(addr3).enterLottery(overrides)
 
-        await saintEthContract.connect(owner).startLottery(addr1.getAddress());
-        await saintEthContract.connect(owner).startLottery(addr2.getAddress());
+        await saintEthContract.connect(owner).startLottery();
+        await saintEthContract.connect(owner).startLottery();
 
         expect(await saintEthContract.addressToTicket(addr1.address)).to.be.equal(0)
         expect(await saintEthContract.addressToTicket(addr2.address)).to.be.equal(1)
@@ -84,7 +84,7 @@ describe("SaintEth", function() {
       });
 
 
-      it('should revert if not caller by the owner', async function () {
+      it('should revert if not called by the owner', async function () {
         const overrides = {value: hre.ethers.utils.parseEther("0.1")}
         await saintEthContract.connect(addr1).enterLottery(overrides)
         await saintEthContract.connect(addr2).enterLottery(overrides)
@@ -93,16 +93,29 @@ describe("SaintEth", function() {
         await expect (saintEthContract.connect(addr1).startLottery(addr1.getAddress()))
         .to.be.revertedWith("Ownable: caller is not the owner")
        
-
       });
 
 
     })
 
-    // describe('startLottery', function() {
-    //   it('should return the Id of a whitelisted address', async function () {
-    //   });
-    // })
+    describe('selectWinner', function() {
+      it('should return the winner', async function () {
+
+        const overrides = {value: hre.ethers.utils.parseEther("0.1")}
+        await saintEthContract.connect(addr1).enterLottery(overrides)
+        await saintEthContract.connect(addr2).enterLottery(overrides)
+        await saintEthContract.connect(addr3).enterLottery(overrides)
+
+        await saintEthContract.connect(owner).startLottery();
+        await saintEthContract.connect(owner).startLottery();
+
+        expect(await saintEthContract.winner()).to.be.equal(participants(s_randomWords[0] % participants.length))
+
+      });
+    })
+
+
+
 
 
 

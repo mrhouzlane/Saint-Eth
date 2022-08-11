@@ -17,7 +17,8 @@ import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
 
 contract SaintEth is Ownable, VRFConsumerBaseV2, ERC721  {
 
-    address payable[] public participants  ; //for the giveAway everyone should know the participants
+    address public winner;
+    address[] public participants;
     mapping(address => bool) public isWhitelisted ; 
     mapping(address => uint256) public addressToTicket; 
     mapping(uint256 => address) winnerToAddress ;
@@ -118,16 +119,15 @@ contract SaintEth is Ownable, VRFConsumerBaseV2, ERC721  {
     
 
     // @notice mint token without paying for authorization gas fees 
-    function selectWinner(address from, uint256 tokenId) public returns (address payable _winner)  {
+    function selectWinner(address from, uint256 tokenId) public {
         require(status == LotterySteps.Started);
-        address payable winner;
         for (uint i = 1 ; i < participants.length ; i ++ ){
-            if (addressToTicket[participants[i]] ==  s_randomWords[0]) {
-                return winner = _winner; 
+            if (addressToTicket[participants[i]] ==  s_randomWords[0] % participants.length) {
+                winner = winnerToAddress[s_randomWords[0]];
             }
         }
 
-        safeTransferFrom(from, _winner, tokenId);
+        safeTransferFrom(from, winner, tokenId);
 
         status = LotterySteps.Finished ;
 
