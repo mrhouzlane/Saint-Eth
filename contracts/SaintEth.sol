@@ -98,17 +98,22 @@ contract SaintEth is Ownable, VRFConsumerBaseV2, ERC721  {
         participants.push(payable(msg.sender));
     }
 
-   
+    uint256[] public ticketNumber;
 
     //@notice Start the Lottery
-    function startLottery() public onlyOwner {
+    function startLottery() public onlyOwner returns (uint256[] memory _ticketNumber) {
         require(status == LotterySteps.Initialized);
         require(participants.length >= 3); // for testing purposes we set 3 to test with 3 accounts; 
         status = LotterySteps.Started;
 
-        for (uint i = 0 ; i < participants.length ; i++){
+        uint i;
+        for (i= 0 ; i < participants.length ; i++){
             addressToTicket[participants[i]] = i+1; 
+            _ticketNumber[i+1] = addressToTicket[participants[i]]; 
         }
+
+        ticketNumber[i] = _ticketNumber[i];
+
 
     }
 

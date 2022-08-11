@@ -68,20 +68,19 @@ describe("SaintEth", function() {
     });
 
 
-    // describe('startLottery', function() {
-    //   it('should return the Id of a whitelisted address', async function () {
-    //     const overrides = {value: hre.ethers.utils.parseEther("0.1")}
-    //     await saintEthContract.connect(addr1).enterLottery(overrides)
-    //     await saintEthContract.connect(addr2).enterLottery(overrides)
+    describe('startLottery', function() {
+      it('should return the Id of a whitelisted address', async function () {
+        const overrides = {value: hre.ethers.utils.parseEther("0.1")}
+        await saintEthContract.connect(addr1).enterLottery(overrides)
+        await saintEthContract.connect(addr2).enterLottery(overrides)
 
-    //     await saintEthContract.connect(owner).startLottery(addr1.getAddress());
-    //     await saintEthContract.connect(owner).startLottery(addr2.getAddress());
+        await saintEthContract.connect(owner).startLottery(addr1.getAddress());
+        await saintEthContract.connect(owner).startLottery(addr2.getAddress());
 
-    //     expect(await saintEthContract.addressToTicket(participants(0))).to.be.equal(1)
-    //     expect(await saintEthContract.addressToTicket(aparticipants(1))).to.be.equal(2)
+        expect(await saintEthContract.ticketNumber(2)).to.be.equal(2)
 
-    //   });
-    // })
+      });
+    })
 
     // describe('startLottery', function() {
     //   it('should return the Id of a whitelisted address', async function () {
