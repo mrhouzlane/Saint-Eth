@@ -91,11 +91,11 @@ contract SaintEth is Ownable, VRFConsumerBaseV2, ERC721  {
 
 
     //@notice Enters lottery by paying 0.1 ethers 
-    function enterLottery(address _address) external payable{
+    function enterLottery() external payable{
         require(msg.value >= 0.1 ether, "Not enough"); //small revert text to consume less gas
         status = LotterySteps.Initialized;
-        isWhitelisted[_address] = true;
-        participants.push(payable(_address));
+        isWhitelisted[msg.sender] = true;
+        participants.push(payable(msg.sender));
     }
 
    
