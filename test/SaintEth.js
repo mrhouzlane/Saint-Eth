@@ -73,13 +73,30 @@ describe("SaintEth", function() {
         const overrides = {value: hre.ethers.utils.parseEther("0.1")}
         await saintEthContract.connect(addr1).enterLottery(overrides)
         await saintEthContract.connect(addr2).enterLottery(overrides)
+        await saintEthContract.connect(addr3).enterLottery(overrides)
 
         await saintEthContract.connect(owner).startLottery(addr1.getAddress());
         await saintEthContract.connect(owner).startLottery(addr2.getAddress());
 
-        expect(await saintEthContract.ticketNumber(2)).to.be.equal(2)
+        expect(await saintEthContract.addressToTicket(addr1.address)).to.be.equal(0)
+        expect(await saintEthContract.addressToTicket(addr2.address)).to.be.equal(1)
 
       });
+
+
+      it('should revert if not caller by the owner', async function () {
+        const overrides = {value: hre.ethers.utils.parseEther("0.1")}
+        await saintEthContract.connect(addr1).enterLottery(overrides)
+        await saintEthContract.connect(addr2).enterLottery(overrides)
+        await saintEthContract.connect(addr3).enterLottery(overrides)
+
+        await expect (saintEthContract.connect(addr1).startLottery(addr1.getAddress()))
+        .to.be.revertedWith("Ownable: caller is not the owner")
+       
+
+      });
+
+
     })
 
     // describe('startLottery', function() {
