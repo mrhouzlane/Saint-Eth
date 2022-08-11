@@ -16,7 +16,7 @@ import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
 
 contract SaintEth is Ownable, VRFConsumerBaseV2, ERC721  {
 
-    address[] public participants  ; //for the giveAway everyone should know the participants
+    address payable[] public participants  ; //for the giveAway everyone should know the participants
     mapping(address => bool) public isWhitelisted ; 
     mapping(address => uint256) public addressToTicket; 
     mapping(uint256 => address) winnerToAddress ;
@@ -62,7 +62,6 @@ contract SaintEth is Ownable, VRFConsumerBaseV2, ERC721  {
         COORDINATOR = VRFCoordinatorV2Interface(vrfCoordinator);
         s_owner = msg.sender;
         s_subscriptionId = subscriptionId;
-        status = LotterySteps.notStarted;
 
     }
 
@@ -89,29 +88,25 @@ contract SaintEth is Ownable, VRFConsumerBaseV2, ERC721  {
 
 
     //@notice Enters lottery by paying 0.1 ethers 
-    function enterLottery() external payable{
-        require(status ==  LotterySteps.notStarted);
+    function enterLottery(address _address) external payable{
         require(msg.value >= 0.1 ether, "Not enough"); //small revert text to consume less gas
         status = LotterySteps.Initialized;
         isWhitelisted[msg.sender] = true;
-        participants.push(msg.sender);
+        participants.push(payable(address _address));
     }
 
-    function returnId(address _address) public returns (uint256) {
-        require(isWhitelisted[_address] = true, "Enter Lottery before getting Id");
-        for (uint i = 0 ; i < participants.length ; i++ ){
-            addressToTicket[participants[i]] = i; 
-        }
-
-        return addressToTicket[_address];
-    }
-
+   
 
     //@notice Start the Lottery
     function startLottery() public onlyOwner {
-        //require(status == LotterySteps.Initliazed);
+        require(status == LotterySteps.Initialized);
         require(participants.length >= 3); // for testing purposes we set 3 to test with 3 accounts; 
         status = LotterySteps.Started;
+
+        for (uint i = 0 ; i < participants.length ; i++){
+            addressToTicket[participants[i]] = i+1; 
+        }
+
     }
 
     
